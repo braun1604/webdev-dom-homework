@@ -8,7 +8,7 @@
 
   <body>
     <div class="container">
-      <ul class="comments">
+      <ul class="comments" id="comments">
         <li class="comment">
           <div class="comment-header">
             <div>Глеб Фокин</div>
@@ -45,19 +45,19 @@
         </li>
       </ul>
       <div class="add-form">
-        <input
+        <input id="input"
           type="text"
           class="add-form-name"
           placeholder="Введите ваше имя"
         />
-        <textarea
+        <textarea id="textarea"
           type="textarea"
           class="add-form-text"
           placeholder="Введите ваш коментарий"
           rows="4"
         ></textarea>
         <div class="add-form-row">
-          <button class="add-form-button">Написать</button>
+          <button class="add-form-button" id="button">Написать</button>
         </div>
       </div>
     </div>
@@ -65,7 +65,40 @@
 
   <script>
     "use strict";
-    // Код писать здесь
-    console.log("It works!");
+    const buttonEl = document.getElementById('button');
+    const inputEl = document.getElementById('input');
+    const textareaEl = document.getElementById('textarea');
+    const commentsEl = document.getElementById('comments');
+
+    buttonEl.addEventListener('click', function (e) {
+      const now = new Date();
+const formattedDate = `${String(now.getDate()).padStart(2, '0')}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getFullYear()).slice(-2)} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+       const inputElement = inputEl.value;
+      const textareaElement = textareaEl.value;
+      if (inputElement === '' || textareaElement === '') {
+        alert('Введите данные корректно')
+        return
+      }
+      const oldCommentsEl = commentsEl.innerHTML;
+      commentsEl.innerHTML = oldCommentsEl + 
+      `<li class="comment">
+          <div class="comment-header">
+            <div>${inputElement}</div>
+            <div>${formattedDate}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${textareaElement}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">0</span>
+              <button class="like-button"></button>
+            </div>
+          </div>
+        </li>`
+    });
+   
   </script>
 </html>
