@@ -62,14 +62,14 @@
       const renderComments = () => {
       const commentsHtml = comments.map((commentary, index) => {
         const classButton = commentary.isLiked ? "-active-like" : ""; 
-        return `<li class="comment">
-          <div class="comment-header">
-            <div>${commentary.name}</div>
+        return `<li class="comment" >
+          <div class="comment-header" >
+            <div data-index="${index}">${commentary.name}</div>
             <div>${commentary.data}</div>
           </div>
           <div class="comment-body">
-            <div class="comment-text">
-              ${commentary.text}
+            <div class="comment-text" data-index="${index}">
+              ${commentary.text} 
             </div>
           </div>
           <div class="comment-footer">
@@ -102,23 +102,45 @@
   }
 }
 
+const copyText = () => {
+  commentsEl.addEventListener('click', (event) => {
+    let target = event.target
+    if (!target.classList.contains('comment-text')) {
+      return
+    }
+    const currentHeader = document.querySelector(`[data-index="${event.target.dataset.index}"]`);
+    textareaEl.value = `>${target.textContent.replace(/\s/g, ' ').trim()}\n${
+          currentHeader.textContent.replace(/\s/g, ' ').trim()}`
+          event.stopPropagation()
+  })
+}
+
     buttonEl.addEventListener('click', function (e) {
        const inputElement = inputEl.value;
       const textareaElement = textareaEl.value;
-      if (inputElement === '' || textareaElement === '') {
+      if (inputElement.trim() === '' || textareaElement.trim() === '') {
         alert('Введите данные корректно')
         return 
       }
       comments.push({
-        name: inputElement,
+        name: inputElement
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
         data: formattedDate,
-        text: textareaElement,
+        text: textareaElement
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
         isLiked: false,
         likeCount: 0
       })
       renderComments();
     });
     renderComments();
+    copyText();
   
    
    
