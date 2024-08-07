@@ -8,7 +8,9 @@
 
   <body>
     <div class="container">
+      <div class="loading" style="display: none;">Пожалуйста подождите, загружаю комментарии...</div>
       <ul class="comments" id="comments"></ul>
+      <div class="loading-comments" style="display: none;"><br>Комментарии добавляются...<br></div>
       <div class="add-form">
         <input id="input"
           type="text"
@@ -34,18 +36,26 @@
     const inputEl = document.getElementById('input');
     const textareaEl = document.getElementById('textarea');
     const commentsEl = document.getElementById('comments');
-    const BASE_URL = 'https://wedev-api.sky.pro/api/v1/braun1600/comments';
+    const BASE_URL = 'https://wedev-api.sky.pro/api/v1/braun1607/comments';
     let comments = [];
 
-    const fetchPromise = () => { fetch(BASE_URL, {
+    const loadingHidden = document.querySelector('.loading');
+    const loading = (loadingHidden) => {
+      loadingHidden.style.display = 'flex'
+    }
+    loading(loadingHidden);
+
+    const fetchPromise = () => {fetch(BASE_URL, {
       method: "GET",
     }).then((responce) => {
-      const jsonPromise = responce.json();
-      jsonPromise.then((responseData) => {
+      return responce.json();
+      })
+      .then((responseData) => {
+        loadingHidden.style.display = 'none'
       comments = responseData.comments;
       renderComments();
       });
-    })};
+    };
 
       const renderComments = () => {
       const commentsHtml = comments.map((commentary, index) => {
@@ -123,15 +133,39 @@ const copyText = () => {
         alert('Введите данные корректно')
         return 
       }
+      const commentHidden = document.querySelector('.add-form');
+    commentHidden.style.display = 'none';
+    const loadingCommentsHidden = document.querySelector('.loading-comments');
+    const loadingComments = (loadingCommentsHidden) => {
+      loadingCommentsHidden.style.display = 'flex'
+    }
+    loading(loadingCommentsHidden);
       fetch(BASE_URL, {
       method: "POST",
       body: JSON.stringify({ text: textareaElement, name: inputElement})
-    });
- 
-      fetchPromise();
+    })
+        .then(() => {
+          return fetch(BASE_URL, {
+            method: "GET",
+          })
+        })
+        .then((responseData) => {
+          return responseData.json();
+        })
+        .then((response) => {
+          comments = response.comments;
+          renderComments();
+        })
+        .then(() => {
+          const loadingCommentsHidden = document.querySelector('.loading-comments');
+    loadingCommentsHidden.style.display = 'none';
+          commentHidden.style.display = 'flex';
+        });
+        
       renderComments();
       inputEl.value = "";
       textareaEl.value = "";
+     
     });
     fetchPromise();
     renderComments();
