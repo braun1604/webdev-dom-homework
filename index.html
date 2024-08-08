@@ -8,16 +8,22 @@
 
   <body>
     <div class="container">
-      <div class="loading" style="display: none;">Пожалуйста подождите, загружаю комментарии...</div>
+      <div class="loading" style="display: none">
+        Пожалуйста подождите, загружаю комментарии...
+      </div>
       <ul class="comments" id="comments"></ul>
-      <div class="loading-comments" style="display: none;"><br>Комментарии добавляются...<br></div>
+      <div class="loading-comments" style="display: none">
+        <br />Комментарии добавляются...<br />
+      </div>
       <div class="add-form">
-        <input id="input"
+        <input
+          id="input"
           type="text"
           class="add-form-name"
           placeholder="Введите ваше имя"
         />
-        <textarea id="textarea"
+        <textarea
+          id="textarea"
           type="textarea"
           class="add-form-text"
           placeholder="Введите ваш коментарий"
@@ -32,45 +38,57 @@
 
   <script>
     "use strict";
-    const buttonEl = document.getElementById('button');
-    const inputEl = document.getElementById('input');
-    const textareaEl = document.getElementById('textarea');
-    const commentsEl = document.getElementById('comments');
-    const BASE_URL = 'https://wedev-api.sky.pro/api/v1/braun1612/comments';
+    const buttonEl = document.getElementById("button");
+    const inputEl = document.getElementById("input");
+    const textareaEl = document.getElementById("textarea");
+    const commentsEl = document.getElementById("comments");
+    const BASE_URL = "https://wedev-api.sky.pro/api/v1/braun1612/comments";
     let comments = [];
 
-    const loadingHidden = document.querySelector('.loading');
+    const loadingHidden = document.querySelector(".loading");
     const loading = (loadingHidden) => {
-      loadingHidden.style.display = 'flex'
-    }
+      loadingHidden.style.display = "flex";
+    };
     loading(loadingHidden);
 
-    const fetchPromise = () => {fetch(BASE_URL, {
-      method: "GET",
-      forceError: true,
-    })
-    .then((responce) => {
-        return responce.json();
-     })
-      .then((responseData) => {
-        loadingHidden.style.display = 'none'
-      comments = responseData.comments;
-      renderComments();
+    const fetchPromise = () => {
+      fetch(BASE_URL, {
+        method: "GET",
+        forceError: true,
       })
+        .then((responce) => {
+          return responce.json();
+        })
+        .then((responseData) => {
+          loadingHidden.style.display = "none";
+          comments = responseData.comments;
+          renderComments();
+        })
+        .catch((error) => {
+          if (error.message == "400 error") {
+            alert("Имя и комментарий должны быть не короче 3 символов");
+          } else if (error.message == "Сервер упал") {
+            alert("Сервер сломался, попробуй позже");
+          } else {
+            error.message == "Failed to fetch";
+            alert("Кажется, у вас сломался интернет, попробуйте позже");
+          }
+        });
     };
 
-      const renderComments = () => {
-      const commentsHtml = comments.map((commentary, index) => {
-      const dateObject = new Date(`${commentary.date}`);
-      const day = dateObject.getDate().toString().padStart(2, '0');
-      const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); 
-      const year = dateObject.getFullYear();
-      const hours = dateObject.getHours().toString().padStart(2, '0');
-      const minutes = dateObject.getMinutes().toString().padStart(2, '0');
-      const seconds = dateObject.getSeconds().toString().padStart(2, '0');
-      const formattedDate = `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
-        const classButton = commentary.isLiked ? "-active-like" : ""; 
-        return `<li class="comment" >
+    const renderComments = () => {
+      const commentsHtml = comments
+        .map((commentary, index) => {
+          const dateObject = new Date(`${commentary.date}`);
+          const day = dateObject.getDate().toString().padStart(2, "0");
+          const month = (dateObject.getMonth() + 1).toString().padStart(2, "0");
+          const year = dateObject.getFullYear();
+          const hours = dateObject.getHours().toString().padStart(2, "0");
+          const minutes = dateObject.getMinutes().toString().padStart(2, "0");
+          const seconds = dateObject.getSeconds().toString().padStart(2, "0");
+          const formattedDate = `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+          const classButton = commentary.isLiked ? "-active-like" : "";
+          return `<li class="comment" >
           <div class="comment-header" >
             <div data-index="${index}">${commentary.author.name}</div>
             <div>${formattedDate}</div>
@@ -86,80 +104,90 @@
               <button class="like-button ${classButton}"  data-index="${index}"></button>
             </div>
           </div>
-        </li>`
-      }).join('');
+        </li>`;
+        })
+        .join("");
       commentsEl.innerHTML = commentsHtml;
       initEventListener();
-    }
+    };
 
-      function initEventListener(){
-      const likeButtonEls = document.querySelectorAll('.like-button');
-    for (const likeButtonEl of likeButtonEls) {
-      likeButtonEl.addEventListener('click', () => {
-       const index = likeButtonEl.dataset.index
-       if (comments[index].isLiked) {
-        comments[index].isLiked = !comments[index].isLiked
-        comments[index].likes--
-      } else {
-        comments[index].isLiked = !comments[index].isLiked
-        comments[index].likes++
+    function initEventListener() {
+      const likeButtonEls = document.querySelectorAll(".like-button");
+      for (const likeButtonEl of likeButtonEls) {
+        likeButtonEl.addEventListener("click", () => {
+          const index = likeButtonEl.dataset.index;
+          if (comments[index].isLiked) {
+            comments[index].isLiked = !comments[index].isLiked;
+            comments[index].likes--;
+          } else {
+            comments[index].isLiked = !comments[index].isLiked;
+            comments[index].likes++;
+          }
+          renderComments();
+        });
       }
-      renderComments();
-    })
-  }
-}
-
-const copyText = () => {
-  commentsEl.addEventListener('click', (event) => {
-    event.stopPropagation()
-    let target = event.target
-    if (!target.classList.contains('comment-text')) {
-      return
     }
-    const currentHeader = document.querySelector(`[data-index="${event.target.dataset.index}"]`);
-    textareaEl.value = `>${target.textContent.replace(/\s/g, ' ').trim()}\n${
-          currentHeader.textContent.replace(/\s/g, ' ').trim()}`
-  })
-}
 
-    buttonEl.addEventListener('click', function (e) {
-      const inputElement = inputEl.value .replaceAll("&", "&amp;")
+    const copyText = () => {
+      commentsEl.addEventListener("click", (event) => {
+        event.stopPropagation();
+        let target = event.target;
+        if (!target.classList.contains("comment-text")) {
+          return;
+        }
+        const currentHeader = document.querySelector(
+          `[data-index="${event.target.dataset.index}"]`
+        );
+        textareaEl.value = `>${target.textContent
+          .replace(/\s/g, " ")
+          .trim()}\n${currentHeader.textContent.replace(/\s/g, " ").trim()}`;
+      });
+    };
+
+    buttonEl.addEventListener("click", function (e) {
+      const inputElement = inputEl.value
+        .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;");
-      const textareaElement = textareaEl.value .replaceAll("&", "&amp;")
+      const textareaElement = textareaEl.value
+        .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;");
-      if (inputElement.trim() === '' || textareaElement.trim() === '') {
-        alert('Введите данные корректно')
-        return 
+      if (inputElement.trim() === "" || textareaElement.trim() === "") {
+        alert("Введите данные корректно");
+        return;
       }
-      const commentHidden = document.querySelector('.add-form');
-    commentHidden.style.display = 'none';
-    const loadingCommentsHidden = document.querySelector('.loading-comments');
-    const loadingComments = (loadingCommentsHidden) => {
-      loadingCommentsHidden.style.display = 'flex'
-    }
-    loading(loadingCommentsHidden);
+      const commentHidden = document.querySelector(".add-form");
+      commentHidden.style.display = "none";
+      const loadingCommentsHidden = document.querySelector(".loading-comments");
+      const loadingComments = (loadingCommentsHidden) => {
+        loadingCommentsHidden.style.display = "flex";
+      };
+      loading(loadingCommentsHidden);
       fetch(BASE_URL, {
-      method: "POST",
-      body: JSON.stringify({ text: textareaElement, name: inputElement, forceError: true,}),
-    })
-    .then((responce) => {
-      if (responce.status === 400) {
-        throw new Error("400 error");
-      }
-      if (responce.status === 500) {
-        throw new Error("Сервер упал");
-     } else {
-        return responce.json();
-     }
-     })
+        method: "POST",
+        body: JSON.stringify({
+          text: textareaElement,
+          name: inputElement,
+          forceError: true,
+        }),
+      })
+        .then((responce) => {
+          if (responce.status === 400) {
+            throw new Error("400 error");
+          }
+          if (responce.status === 500) {
+            throw new Error("Сервер упал");
+          } else {
+            return responce.json();
+          }
+        })
         .then(() => {
           return fetch(BASE_URL, {
             method: "GET",
-          })
+          });
         })
         .then((responseData) => {
           return responseData.json();
@@ -169,35 +197,30 @@ const copyText = () => {
           renderComments();
         })
         .then(() => {
-          const loadingCommentsHidden = document.querySelector('.loading-comments');
-    loadingCommentsHidden.style.display = 'none';
-          commentHidden.style.display = 'flex';
+          const loadingCommentsHidden =
+            document.querySelector(".loading-comments");
+          loadingCommentsHidden.style.display = "none";
+          commentHidden.style.display = "flex";
           inputEl.value = "";
           textareaEl.value = "";
         })
         .catch((error) => {
           if (error.message == "400 error") {
-            alert("Имя и комментарий должны быть не короче 3 символов")
-            }
-          else if (error.message == "Сервер упал") {
-            alert("Сервер сломался, попробуй позже")
-            }
-          else { (error.message == "Failed to fetch") 
-            alert("Кажется, у вас сломался интернет, попробуйте позже")
+            alert("Имя и комментарий должны быть не короче 3 символов");
+          } else if (error.message == "Сервер упал") {
+            alert("Сервер сломался, попробуй позже");
+          } else {
+            error.message == "Failed to fetch";
+            alert("Кажется, у вас сломался интернет, попробуйте позже");
           }
-          loadingCommentsHidden.style.display = 'none';
-          commentHidden.style.display = 'flex';
+          loadingCommentsHidden.style.display = "none";
+          commentHidden.style.display = "flex";
         });
-        
-        
+
       renderComments();
-     
-     
     });
     fetchPromise();
     renderComments();
     copyText();
-  
   </script>
 </html>
-
