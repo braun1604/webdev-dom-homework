@@ -42,7 +42,7 @@
     const inputEl = document.getElementById("input");
     const textareaEl = document.getElementById("textarea");
     const commentsEl = document.getElementById("comments");
-    const BASE_URL = "https://wedev-api.sky.pro/api/v1/braun1612/comments";
+    const BASE_URL = "https://wedev-api.sky.pro/api/v1/braun1604/comments";
     let comments = [];
 
     const loadingHidden = document.querySelector(".loading");
@@ -52,12 +52,13 @@
     loading(loadingHidden);
 
     const fetchPromise = () => {
-      fetch(BASE_URL, {
-        method: "GET",
-        forceError: true,
-      })
+      fetch(BASE_URL)
         .then((responce) => {
-          return responce.json();
+          if (responce.status === 500) {
+            throw new Error("Сервер упал");
+          } else {
+            return responce.json();
+          }
         })
         .then((responseData) => {
           loadingHidden.style.display = "none";
@@ -65,9 +66,7 @@
           renderComments();
         })
         .catch((error) => {
-          if (error.message == "400 error") {
-            alert("Имя и комментарий должны быть не короче 3 символов");
-          } else if (error.message == "Сервер упал") {
+          if (error.message == "Сервер упал") {
             alert("Сервер сломался, попробуй позже");
           } else {
             error.message == "Failed to fetch";
@@ -185,9 +184,7 @@
           }
         })
         .then(() => {
-          return fetch(BASE_URL, {
-            method: "GET",
-          });
+          return fetch(BASE_URL);
         })
         .then((responseData) => {
           return responseData.json();
