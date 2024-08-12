@@ -1,4 +1,5 @@
 import { renderComments } from "./renderComments.js";
+import { BASE_URL } from "./const.js";
 export const fetchPromise = () => {
   fetch(BASE_URL)
     .then((responce) => {
@@ -24,7 +25,6 @@ export const fetchPromise = () => {
 };
 const buttonEl = document.getElementById("button");
 let comments = [];
-const BASE_URL = "https://wedev-api.sky.pro/api/v1/braun1606/comments";
 const loadingHidden = document.querySelector(".loading");
 const loading = (loadingHidden) => {
   loadingHidden.style.display = "flex";
