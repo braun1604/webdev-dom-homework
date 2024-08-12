@@ -31,4 +31,6 @@ export const copyText = () => {
       .trim()}\n${currentHeader.textContent.replace(/\s/g, " ").trim()}`;
   });
 };
+const textareaEl = document.getElementById("textarea");
+const commentsEl = document.getElementById("comments");
 
