@@ -1,8 +1,9 @@
 import { REGISTRATION_URL} from "./const.js";
 import { BASE_URL} from "./const.js";
+import { renderLogin } from "./loginPage.js";
 export const registration = () => {
     const registrationForm = document.createElement('div');
-    registrationForm.innerHTML =  `<div class="registration-form">
+    registrationForm.innerHTML =  `<div  class="registration-form">
 <div>
   <h2>Форма регистрации</h2>
 </div>
@@ -17,16 +18,22 @@ export const registration = () => {
 <button class="login-button" id="button-registration"><b>Зарегистрироваться</b></button>
 </div>
 <br />
-<a href="index.html" id="form-enter" class="registration">Войти</a>
+<a href="#" id="form-enter" class="registration">Войти</a>
 </div>
 `
     const registrationFormNew = document.getElementById("container");
     registrationFormNew.appendChild(registrationForm);
+    const reg = document.querySelector(".registration-form")
 
     const formNameEl = document.getElementById("form-name");
     const formLoginEl = document.getElementById("form-login");
     const formPasswordEl = document.getElementById("form-password");
     const buttonRegistration = document.getElementById("button-registration");
+    const FormEnter = document.getElementById("form-enter");
+    FormEnter.addEventListener("click", function () {
+      reg.remove();
+    renderLogin()
+  });
     buttonRegistration.addEventListener("click", function (e) {
       const formNameElement = formNameEl.value
         .replaceAll("&", "&amp;")

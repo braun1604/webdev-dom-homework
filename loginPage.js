@@ -1,6 +1,7 @@
 import { LOGIN_URL } from "./const.js";
 import { BASE_URL } from "./const.js";
 import { renderComments } from "./renderComments.js";
+import { registration } from "./registration.js";
 export const renderLogin = () => {
   const loginTodo = document.createElement("div");
   loginTodo.innerHTML = `<div class="login">
@@ -16,7 +17,7 @@ export const renderLogin = () => {
 <button class="login-button" id="login-button"><b>Войти</b></button>
 </div>
 <br />
-<a href="index.html" id="link-to-tasks" class="registration">Зарегистрироваться</a>
+<a href="#" id="link-to-tasks" class="registration">Зарегистрироваться</a>
 </div>
 `;
   const loginAddForm = document.getElementById("loginForm");
@@ -24,6 +25,12 @@ export const renderLogin = () => {
   const loginEl = document.getElementById("login-input");
   const passwordEl = document.getElementById("password-input");
   const loginButton = document.getElementById("login-button");
+  const linkToTasks = document.getElementById("link-to-tasks");
+  const login = document.querySelector(".login");
+  linkToTasks.addEventListener("click", function () {
+    login.remove();
+    registration()
+  });
   loginButton.addEventListener("click", function (e) {
     const loginElement = loginEl.value
       .replaceAll("&", "&amp;")
@@ -56,10 +63,10 @@ export const renderLogin = () => {
 
       .then((data) => {
         const user = data.user;
-        return user
+        return user;
       })
       .then((user) => {
-        console.log(user.token)
+        console.log(user.token);
         return fetch(BASE_URL, {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -72,11 +79,10 @@ export const renderLogin = () => {
       })
       .then((responce) => {
         const comments = responce.comments;
-        console.log(comments)
-        return comments
+        console.log(comments);
+        return comments;
       })
       .then((comments) => {
-        
         renderComments(comments);
       })
       .catch((error) => {
