@@ -79,7 +79,6 @@ export const renderLogin = () => {
       })
       .then((responce) => {
         const comments = responce.comments;
-        console.log(comments);
         return comments;
       })
       .then((comments) => {
