@@ -1,3 +1,5 @@
+import { LOGIN_URL } from "./const.js";
+import { BASE_URL } from "./const.js";
 import { renderComments } from "./renderComments.js";
 export const renderLogin = () => {
   const loginTodo = document.createElement("div");
@@ -8,7 +10,7 @@ export const renderLogin = () => {
 <div class="form-row">
 <input type="text" value="admin" id="login-input" class="input" placeholder="Введите логин">
 <br />
-<input type="text" value="admin" id="password-input" class="input" placeholder="Пароль">
+<input type="password" value="admin" id="password-input" class="input" placeholder="Пароль">
 </div>
 <div class="login-button-div">
 <button class="login-button" id="login-button"><b>Войти</b></button>
@@ -34,7 +36,7 @@ export const renderLogin = () => {
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;");
 
-    fetch("https://wedev-api.sky.pro/api/user/login", {
+    fetch(LOGIN_URL, {
       method: "POST",
       body: JSON.stringify({
         login: loginElement,
@@ -52,9 +54,30 @@ export const renderLogin = () => {
         }
       })
 
-      .then((response) => {
-        const user = response.user;
-        console.log(user);
+      .then((data) => {
+        const user = data.user;
+        return user
+      })
+      .then((user) => {
+        console.log(user.token)
+        return fetch(BASE_URL, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+      })
+
+      .then((responce) => {
+        return responce.json();
+      })
+      .then((responce) => {
+        const comments = responce.comments;
+        console.log(comments)
+        return comments
+      })
+      .then((comments) => {
+        
+        renderComments(comments);
       })
       .catch((error) => {
         if (error.message == "400 error") {

@@ -63,6 +63,9 @@ buttonEl.addEventListener("click", function (e) {
       name: inputElement,
       forceError: true,
     }),
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
   })
     .then((responce) => {
       if (responce.status === 400) {
