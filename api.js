@@ -25,11 +25,19 @@ export const fetchPromise = () => {
 };
 const buttonEl = document.getElementById("button");
 let comments = [];
-const loadingHidden = document.querySelector(".loading");
+
+const loadingHidden = document.createElement("div");
+
+loadingHidden.innerHTML = ` <div class="loading" style="display: block">
+        Пожалуйста подождите, загружаю комментарии...
+      </div>`;
+document.getElementById("app").appendChild(loadingHidden);
+
 const loading = (loadingHidden) => {
   loadingHidden.style.display = "flex";
 };
 loading(loadingHidden);
+
 const inputEl = document.getElementById("input");
 const textareaEl = document.getElementById("textarea");
 
@@ -48,9 +56,17 @@ buttonEl.addEventListener("click", function (e) {
     alert("Введите данные корректно");
     return;
   }
+
   const commentHidden = document.querySelector(".add-form");
   commentHidden.style.display = "none";
-  const loadingCommentsHidden = document.querySelector(".loading-comments");
+
+  const loadingCommentsHidden = document.createElement("div");
+  loadingCommentsHidden.innerHTML = `<div class="loading-comments" style="display: block">
+        <br />Комментарии добавляются...<br />
+      </div>`;
+
+  document.getElementById("app").appendChild(loadingCommentsHidden);
+
   const loadingComments = (loadingCommentsHidden) => {
     loadingCommentsHidden.style.display = "flex";
   };

@@ -11,6 +11,7 @@ export const initEventListener = (comments) => {
         comments[index].isLiked = !comments[index].isLiked;
         comments[index].likes++;
       }
+      
       renderComments(comments);
     });
   }

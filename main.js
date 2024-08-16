@@ -5,7 +5,7 @@ import { initEventListener } from "./helper.js";
 import { copyText } from "./helper.js";
 import { renderLogin } from "./loginPage.js";
 import { notion } from "./notion.js";
-// import { registration } from "./registration.js";
+import { registration } from "./registration.js";
 
 let comments = [];
 
@@ -21,10 +21,15 @@ let comments = [];
    
 // }
 
-initEventListener(comments);
-fetchPromise();
-notion()
 renderComments(comments);
+
+initEventListener(comments);
+
+fetchPromise();
+
+notion()
 copyText();
+
+
 
 

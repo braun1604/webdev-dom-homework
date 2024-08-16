@@ -21,7 +21,7 @@ export const registration = () => {
 <a href="#" id="form-enter" class="registration">Войти</a>
 </div>
 `
-    const registrationFormNew = document.getElementById("container");
+    const registrationFormNew = document.getElementById("app");
     registrationFormNew.appendChild(registrationForm);
     const reg = document.querySelector(".registration-form")
 

@@ -20,7 +20,7 @@ export const renderLogin = () => {
 <a href="#" id="link-to-tasks" class="registration">Зарегистрироваться</a>
 </div>
 `;
-  const loginAddForm = document.getElementById("loginForm");
+  const loginAddForm = document.getElementById("app");
   loginAddForm.appendChild(loginTodo);
   const loginEl = document.getElementById("login-input");
   const passwordEl = document.getElementById("password-input");
