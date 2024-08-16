@@ -53,7 +53,7 @@ export const registration = () => {
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;");
-  
+  let user;
       fetch(REGISTRATION_URL, {
         method: "POST",
         body: JSON.stringify({
@@ -74,7 +74,7 @@ export const registration = () => {
         })
   
         .then((data) => {
-          const user = data.user;
+          user = data.user;
           return user
         })
         .then((user) => {

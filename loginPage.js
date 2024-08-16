@@ -43,7 +43,7 @@ export const renderLogin = () => {
       .replaceAll("<", "&lt;")
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;");
-
+let user;
      fetch(LOGIN_URL, {
       method: "POST",
       body: JSON.stringify({
@@ -63,8 +63,8 @@ export const renderLogin = () => {
       })
 
       .then((data) => {
-        const user = data.user;
-        commentsForm(user);
+        user = data.user;
+        // commentsForm(user);
         return user;
       })
       .then((user) => {
@@ -86,7 +86,7 @@ export const renderLogin = () => {
         renderComments(comments);
         login.remove();
         console.log(user)
-        
+        commentsForm(user);
       })
       
       .catch((error) => {
