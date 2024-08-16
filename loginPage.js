@@ -2,6 +2,7 @@ import { LOGIN_URL } from "./const.js";
 import { BASE_URL } from "./const.js";
 import { renderComments } from "./renderComments.js";
 import { registration } from "./registration.js";
+import { commentsForm } from "./commentsForm.js";
 export const renderLogin = () => {
   const loginTodo = document.createElement("div");
   loginTodo.innerHTML = `<div class="login">
@@ -43,7 +44,7 @@ export const renderLogin = () => {
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;");
 
-    fetch(LOGIN_URL, {
+     fetch(LOGIN_URL, {
       method: "POST",
       body: JSON.stringify({
         login: loginElement,
@@ -63,10 +64,10 @@ export const renderLogin = () => {
 
       .then((data) => {
         const user = data.user;
+        commentsForm(user);
         return user;
       })
       .then((user) => {
-        console.log(user.token);
         return fetch(BASE_URL, {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -83,7 +84,11 @@ export const renderLogin = () => {
       })
       .then((comments) => {
         renderComments(comments);
+        login.remove();
+        console.log(user)
+        
       })
+      
       .catch((error) => {
         if (error.message == "400 error") {
           alert("Передан неправильный логин или пароль");

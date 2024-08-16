@@ -1,6 +1,9 @@
 import { REGISTRATION_URL} from "./const.js";
 import { BASE_URL} from "./const.js";
 import { renderLogin } from "./loginPage.js";
+import { renderComments } from "./renderComments.js";
+import { commentsForm } from "./commentsForm.js";
+
 export const registration = () => {
     const registrationForm = document.createElement('div');
     registrationForm.innerHTML =  `<div  class="registration-form">
@@ -94,6 +97,8 @@ export const registration = () => {
         .then((comments) => {
           
           renderComments(comments);
+          reg.remove();
+        commentsForm(user);
         })
         .catch((error) => {
           if (error.message == "400 error") {
