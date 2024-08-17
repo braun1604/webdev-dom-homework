@@ -13,11 +13,13 @@ export const initEventListener = (comments) => {
       }
       
       renderComments(comments);
+      copyText()
     });
   }
 };
 
 export const copyText = () => {
+  console.log(123)
   commentsEl.addEventListener("click", (event) => {
     event.stopPropagation();
     let target = event.target;
@@ -32,6 +34,7 @@ export const copyText = () => {
       .trim()}\n${currentHeader.textContent.replace(/\s/g, " ").trim()}`;
   });
 };
+
 const textareaEl = document.getElementById("textarea");
 const commentsEl = document.getElementById("comments");
 
