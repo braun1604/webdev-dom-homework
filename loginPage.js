@@ -3,7 +3,7 @@ import { BASE_URL } from "./const.js";
 import { renderComments } from "./renderComments.js";
 import { registration } from "./registration.js";
 import { commentsForm } from "./commentsForm.js";
-export const renderLogin = () => {
+export const renderLogin =  () => {
   const loginTodo = document.createElement("div");
   loginTodo.innerHTML = `<div class="login">
 <div>
@@ -30,9 +30,9 @@ export const renderLogin = () => {
   const login = document.querySelector(".login");
   linkToTasks.addEventListener("click", function () {
     login.remove();
-    registration()
+    registration();
   });
-  loginButton.addEventListener("click", function (e) {
+  loginButton.addEventListener("click", async function (e) {
     const loginElement = loginEl.value
       .replaceAll("&", "&amp;")
       .replaceAll("<", "&lt;")
@@ -43,8 +43,8 @@ export const renderLogin = () => {
       .replaceAll("<", "&lt;")
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;");
-let user;
-     fetch(LOGIN_URL, {
+    let user;
+    await fetch(LOGIN_URL, {
       method: "POST",
       body: JSON.stringify({
         login: loginElement,
@@ -64,11 +64,12 @@ let user;
 
       .then((data) => {
         user = data.user;
+        console.log(data)
         // commentsForm(user);
         return user;
       })
-      .then((user) => {
-        return fetch(BASE_URL, {
+      .then(async(user) => {
+        return await fetch(BASE_URL, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -83,12 +84,14 @@ let user;
         return comments;
       })
       .then((comments) => {
+        console.log(1);
         renderComments(comments);
         login.remove();
-        console.log(user)
+        console.log(user);
         commentsForm(user);
+        console.log(2);
       })
-      
+
       .catch((error) => {
         if (error.message == "400 error") {
           alert("Передан неправильный логин или пароль");

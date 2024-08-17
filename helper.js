@@ -13,9 +13,9 @@ export const initEventListener = (comments) => {
       }
       
       renderComments(comments);
-      copyText()
     });
   }
+  copyText()
 };
 
 export const copyText = () => {
