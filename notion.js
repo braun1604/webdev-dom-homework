@@ -12,9 +12,3 @@ export const notion = () => {
     renderLogin();
   });
 };
-
-// const login = document.querySelector(".login");
-// const loginDisplay = window.getComputedStyle(login, null).display;
-// if ( loginDisplay === "none") {
-//      login.style.display = "block"
-// }

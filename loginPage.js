@@ -3,7 +3,8 @@ import { BASE_URL } from "./const.js";
 import { renderComments } from "./renderComments.js";
 import { registration } from "./registration.js";
 import { commentsForm } from "./commentsForm.js";
-export const renderLogin =  () => {
+
+export const renderLogin = () => {
   const loginTodo = document.createElement("div");
   loginTodo.innerHTML = `<div class="login">
 <div>
@@ -64,12 +65,10 @@ export const renderLogin =  () => {
 
       .then((data) => {
         user = data.user;
-        console.log(data)
-        // commentsForm(user);
         return user;
       })
-      .then(async(user) => {
-        return await fetch(BASE_URL, {
+      .then((user) => {
+        return fetch(BASE_URL, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -84,12 +83,9 @@ export const renderLogin =  () => {
         return comments;
       })
       .then((comments) => {
-        console.log(1);
-        renderComments(comments);
         login.remove();
-        console.log(user);
+        renderComments(comments);
         commentsForm(user);
-        console.log(2);
       })
 
       .catch((error) => {

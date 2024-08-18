@@ -1,4 +1,3 @@
-import { renderComments } from "./renderComments.js";
 export const initEventListener = (comments) => {
   const likeButtonEls = document.querySelectorAll(".like-button");
   for (const likeButtonEl of likeButtonEls) {
@@ -11,15 +10,14 @@ export const initEventListener = (comments) => {
         comments[index].isLiked = !comments[index].isLiked;
         comments[index].likes++;
       }
-      
-      renderComments(comments);
     });
   }
-  copyText()
 };
 
+const textareaEl = document.getElementById("textarea");
+const commentsEl = document.getElementById("comments");
+
 export const copyText = () => {
-  console.log(123)
   commentsEl.addEventListener("click", (event) => {
     event.stopPropagation();
     let target = event.target;
@@ -34,7 +32,3 @@ export const copyText = () => {
       .trim()}\n${currentHeader.textContent.replace(/\s/g, " ").trim()}`;
   });
 };
-
-const textareaEl = document.getElementById("textarea");
-const commentsEl = document.getElementById("comments");
-

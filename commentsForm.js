@@ -2,19 +2,6 @@ import { renderComments } from "./renderComments.js";
 import { BASE_URL } from "./const.js";
 
 export const commentsForm = (user) => {
-  console.log("commentsform")
-  const loadingHidden = document.createElement("div");
-
-  loadingHidden.innerHTML = ` <div class="loading" style="display: block">
-        Пожалуйста подождите, загружаю комментарии...
-      </div>`;
-  document.getElementById("app").appendChild(loadingHidden);
-
-  const loading = (loadingHidden) => {
-    loadingHidden.style.display = "flex";
-  };
-  loading(loadingHidden);
-
   const buttonEl = document.createElement("div");
   buttonEl.innerHTML = `<div class="add-form">
         <input
@@ -67,12 +54,6 @@ export const commentsForm = (user) => {
 
     document.getElementById("app").appendChild(loadingCommentsHidden);
 
-    const loadingComments = (loadingCommentsHidden) => {
-      loadingCommentsHidden.style.display = "flex";
-    };
-    loading(loadingCommentsHidden);
-    console.log(user);
-    console.log(textareaEl);
     fetch(BASE_URL, {
       method: "POST",
       body: JSON.stringify({
@@ -104,7 +85,7 @@ export const commentsForm = (user) => {
       })
       .then((response) => {
         const comments = response.comments;
-        console.log(comments);
+
         renderComments(comments);
       })
       .then(() => {

@@ -1,10 +1,7 @@
-import { initEventListener } from "./helper.js";
 export const renderComments = (comments) => {
-  
-  const ulComments = document.createElement('ul');
-  ulComments.innerHTML = `<ul class="comments" id="comments"></ul>`
+  const ulComments = document.createElement("ul");
+  ulComments.innerHTML = `<ul class="comments" id="comments"></ul>`;
   document.getElementById("app").appendChild(ulComments);
-
 
   const commentsEl = document.getElementById("comments");
   const commentsHtml = comments
@@ -38,5 +35,4 @@ export const renderComments = (comments) => {
     })
     .join("");
   commentsEl.innerHTML = commentsHtml;
-  initEventListener(comments);
 };

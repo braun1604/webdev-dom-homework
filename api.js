@@ -1,6 +1,16 @@
 import { renderComments } from "./renderComments.js";
 import { BASE_URL } from "./const.js";
-export const fetchPromise =  async () => {
+
+const loadingHidden = document.createElement("div");
+
+loadingHidden.innerHTML = ` <div class="loading" style="display: block">
+      Пожалуйста подождите, загружаю комментарии...
+    </div>`;
+document.getElementById("app").appendChild(loadingHidden);
+loadingHidden.style.display = "flex";
+
+export const fetchPromise = async () => {
+  loadingHidden.style.display = "flex";
   await fetch(BASE_URL)
     .then((responce) => {
       if (responce.status === 500) {
@@ -10,10 +20,8 @@ export const fetchPromise =  async () => {
       }
     })
     .then((responseData) => {
-      // const loadingHidden = document.querySelector(".loading");
-      // loadingHidden.style.display = "none";
       const newComments = responseData.comments;
-      console.log(newComments)
+      loadingHidden.style.display = "none";
       renderComments(newComments);
     })
     .catch((error) => {
@@ -25,6 +33,3 @@ export const fetchPromise =  async () => {
       }
     });
 };
-
-
-
