@@ -87,7 +87,8 @@ export const renderLogin = () => {
         login.remove();
         renderComments(comments);
         commentsForm(user);
-        copyText()
+        copyText();
+        initEventListener();
       })
 
       .catch((error) => {

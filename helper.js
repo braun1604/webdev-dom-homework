@@ -1,6 +1,3 @@
-import { renderComments } from "./renderComments.js";
-import { commentsForm } from "./commentsForm.js";
-
 export const initEventListener = (comments) => {
   const likeButtonEls = document.querySelectorAll(".like-button");
   for (const likeButtonEl of likeButtonEls) {
@@ -17,9 +14,6 @@ export const initEventListener = (comments) => {
   }
 };
 
-
-
-
 export const copyText = () => {
   const commentsEl = document.getElementById("comments");
   const textareaEl = document.getElementById("textarea");
@@ -32,7 +26,7 @@ export const copyText = () => {
     const currentHeader = document.querySelector(
       `[data-index="${event.target.dataset.index}"]`
     );
-    console.log(event.target.textContent)
+    console.log(event.target.textContent);
     textareaEl.value = `>${event.target.textContent
       .replace(/\s/g, " ")
       .trim()}\n${currentHeader.textContent.replace(/\s/g, " ").trim()}`;

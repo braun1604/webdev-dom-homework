@@ -8,8 +8,6 @@ export const notion = () => {
 
   const buttonAuthorization = document.querySelector(".buttonAuthorization");
 
-
-
   buttonAuthorization.addEventListener("click", () => {
     textAuthorization.remove();
     document.getElementById("comments").remove();

@@ -99,7 +99,7 @@ export const registration = () => {
         reg.remove();
         renderComments(comments);
         commentsForm(user);
-        copyText()
+        copyText();
       })
       .catch((error) => {
         if (error.message == "400 error") {

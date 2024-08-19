@@ -1,5 +1,3 @@
-import { initEventListener, copyText } from "./helper.js";
-
 export const renderComments = (comments) => {
   const ulComments = document.createElement("ul");
   ulComments.className = "comments";
@@ -37,5 +35,4 @@ export const renderComments = (comments) => {
     })
     .join("");
   commentsEl.innerHTML = commentsHtml;
-  initEventListener();
 };
