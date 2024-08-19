@@ -24,11 +24,12 @@ export const commentsForm = (user) => {
         </div>
       </div >`;
   document.getElementById("app").appendChild(buttonEl);
+  const commentAdd = document.querySelector(".add-form-button");
 
   const inputEl = document.getElementById("input");
   const textareaEl = document.getElementById("textarea");
 
-  buttonEl.addEventListener("click", function (e) {
+  commentAdd.addEventListener("click", function (e) {
     const inputElement = inputEl.value
       .replaceAll("&", "&amp;")
       .replaceAll("<", "&lt;")
@@ -40,17 +41,14 @@ export const commentsForm = (user) => {
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;");
     if (inputElement.trim() === "" || textareaElement.trim() === "") {
-      alert("Введите данные корректно");
-      return;
+      return alert("Введите данные корректно");
     }
-
     const commentHidden = document.querySelector(".add-form");
     commentHidden.style.display = "none";
 
     const loadingCommentsHidden = document.createElement("div");
-    loadingCommentsHidden.innerHTML = `<div class="loading-comments" style="display: block">
-        <br />Комментарии добавляются...<br />
-      </div>`;
+    loadingCommentsHidden.className = "loading-comments";
+    loadingCommentsHidden.innerHTML = `<br />Комментарии добавляются...<br />`;
 
     document.getElementById("app").appendChild(loadingCommentsHidden);
 
@@ -89,11 +87,9 @@ export const commentsForm = (user) => {
         renderComments(comments);
       })
       .then(() => {
-        const loadingCommentsHidden =
-          document.querySelector(".loading-comments");
-        loadingCommentsHidden.style.display = "none";
+        loadingCommentsHidden.remove();
         commentHidden.style.display = "flex";
-        inputEl.value = "";
+        inputEl.value = user.name;
         textareaEl.value = "";
       })
       .catch((error) => {

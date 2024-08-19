@@ -3,6 +3,7 @@ import { BASE_URL } from "./const.js";
 import { renderLogin } from "./loginPage.js";
 import { renderComments } from "./renderComments.js";
 import { commentsForm } from "./commentsForm.js";
+import { copyText } from "./helper.js";
 
 export const registration = () => {
   const registrationForm = document.createElement("div");
@@ -98,6 +99,7 @@ export const registration = () => {
         reg.remove();
         renderComments(comments);
         commentsForm(user);
+        copyText()
       })
       .catch((error) => {
         if (error.message == "400 error") {

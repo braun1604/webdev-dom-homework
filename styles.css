@@ -180,3 +180,14 @@ h2 {
   padding-top: 20px;
   }
 
+.buttonAuthorization {
+  cursor: pointer;
+  background: #202020;
+  color: #ffffff;
+  text-decoration: underline;
+  border: none;
+  font-size: 16px;
+}
+.loading-comments{
+  display: block;
+}

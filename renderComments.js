@@ -1,8 +1,10 @@
+import { initEventListener, copyText } from "./helper.js";
+
 export const renderComments = (comments) => {
   const ulComments = document.createElement("ul");
-  ulComments.innerHTML = `<ul class="comments" id="comments"></ul>`;
+  ulComments.className = "comments";
+  ulComments.id = "comments";
   document.getElementById("app").appendChild(ulComments);
-
   const commentsEl = document.getElementById("comments");
   const commentsHtml = comments
     .map((commentary, index) => {
@@ -35,4 +37,5 @@ export const renderComments = (comments) => {
     })
     .join("");
   commentsEl.innerHTML = commentsHtml;
+  initEventListener();
 };

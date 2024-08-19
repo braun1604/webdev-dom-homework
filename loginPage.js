@@ -3,6 +3,7 @@ import { BASE_URL } from "./const.js";
 import { renderComments } from "./renderComments.js";
 import { registration } from "./registration.js";
 import { commentsForm } from "./commentsForm.js";
+import { copyText } from "./helper.js";
 
 export const renderLogin = () => {
   const loginTodo = document.createElement("div");
@@ -86,6 +87,7 @@ export const renderLogin = () => {
         login.remove();
         renderComments(comments);
         commentsForm(user);
+        copyText()
       })
 
       .catch((error) => {
