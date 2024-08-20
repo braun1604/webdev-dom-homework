@@ -14,6 +14,7 @@ export const renderComments = (comments) => {
       const minutes = dateObject.getMinutes().toString().padStart(2, "0");
       const seconds = dateObject.getSeconds().toString().padStart(2, "0");
       const formattedDate = `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+      // const formattedDate = format(dateObject, "yyyy-MM-dd hh.mm.ss"); 
       const classButton = commentary.isLiked ? "-active-like" : "";
       return `<li class="comment" >
       <div class="comment-header" >

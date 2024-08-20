@@ -26,7 +26,6 @@ export const copyText = () => {
     const currentHeader = document.querySelector(
       `[data-index="${event.target.dataset.index}"]`
     );
-    console.log(event.target.textContent);
     textareaEl.value = `>${event.target.textContent
       .replace(/\s/g, " ")
       .trim()}\n${currentHeader.textContent.replace(/\s/g, " ").trim()}`;

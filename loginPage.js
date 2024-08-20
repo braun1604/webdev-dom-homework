@@ -4,6 +4,7 @@ import { renderComments } from "./renderComments.js";
 import { registration } from "./registration.js";
 import { commentsForm } from "./commentsForm.js";
 import { copyText } from "./helper.js";
+import { initEventListener } from "./helper.js";
 
 export const renderLogin = () => {
   const loginTodo = document.createElement("div");
@@ -92,13 +93,15 @@ export const renderLogin = () => {
       })
 
       .catch((error) => {
+        console.error(error);
         if (error.message == "400 error") {
           alert("Передан неправильный логин или пароль");
         } else if (error.message == "Сервер упал") {
           alert("Сервер сломался, попробуй позже");
-        } else {
-          error.message == "Failed to fetch";
+        } else if (error.message == "Failed to fetch") {
           alert("Кажется, у вас сломался интернет, попробуйте позже");
+        } else {
+          alert("Неизвестная ошибка")
         }
       });
   });
