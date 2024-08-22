@@ -1,4 +1,6 @@
-export const renderComments = (comments) => {
+import { initEventListener } from "./helper.js";
+
+export const renderComments = (comments, user) => {
   const ulComments = document.createElement("ul");
   ulComments.className = "comments";
   ulComments.id = "comments";
@@ -14,7 +16,6 @@ export const renderComments = (comments) => {
       const minutes = dateObject.getMinutes().toString().padStart(2, "0");
       const seconds = dateObject.getSeconds().toString().padStart(2, "0");
       const formattedDate = `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
-      // const formattedDate = format(dateObject, "yyyy-MM-dd hh.mm.ss"); 
       const classButton = commentary.isLiked ? "-active-like" : "";
       return `<li class="comment" >
       <div class="comment-header" >
@@ -36,4 +37,7 @@ export const renderComments = (comments) => {
     })
     .join("");
   commentsEl.innerHTML = commentsHtml;
+  if (user) {
+    initEventListener(comments, user);
+  }
 };

@@ -3,8 +3,7 @@ import { BASE_URL } from "./const.js";
 import { renderComments } from "./renderComments.js";
 import { registration } from "./registration.js";
 import { commentsForm } from "./commentsForm.js";
-import { copyText } from "./helper.js";
-import { initEventListener } from "./helper.js";
+import { copyText, initEventListener } from "./helper.js";
 
 export const renderLogin = () => {
   const loginTodo = document.createElement("div");
@@ -86,10 +85,10 @@ export const renderLogin = () => {
       })
       .then((comments) => {
         login.remove();
-        renderComments(comments);
+        renderComments(comments, user);
         commentsForm(user);
         copyText();
-        initEventListener();
+        initEventListener(comments, user);
       })
 
       .catch((error) => {
@@ -101,7 +100,7 @@ export const renderLogin = () => {
         } else if (error.message == "Failed to fetch") {
           alert("Кажется, у вас сломался интернет, попробуйте позже");
         } else {
-          alert("Неизвестная ошибка")
+          alert("Неизвестная ошибка");
         }
       });
   });

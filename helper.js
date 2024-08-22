@@ -1,15 +1,35 @@
-export const initEventListener = (comments) => {
+import { likefun } from "./const.js";
+import { renderComments } from "./renderComments.js";
+import { BASE_URL } from "./const.js";
+
+export const initEventListener = (comments, user) => {
   const likeButtonEls = document.querySelectorAll(".like-button");
   for (const likeButtonEl of likeButtonEls) {
     likeButtonEl.addEventListener("click", () => {
       const index = likeButtonEl.dataset.index;
-      if (comments[index].isLiked) {
-        comments[index].isLiked = !comments[index].isLiked;
-        comments[index].likes--;
-      } else {
-        comments[index].isLiked = !comments[index].isLiked;
-        comments[index].likes++;
-      }
+      fetch(likefun(comments[index].id), {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+        .then(() => {
+          return fetch(BASE_URL, {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          });
+        })
+        .then((responce) => {
+          return responce.json();
+        })
+        .then((responce) => {
+          const comments = responce.comments;
+          return comments;
+        })
+        .then((comments) => {
+          renderComments(comments, user);
+        });
     });
   }
 };

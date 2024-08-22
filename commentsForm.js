@@ -84,7 +84,7 @@ export const commentsForm = (user) => {
       .then((response) => {
         const comments = response.comments;
 
-        renderComments(comments);
+        renderComments(comments, user);
       })
       .then(() => {
         loadingCommentsHidden.remove();
@@ -104,7 +104,5 @@ export const commentsForm = (user) => {
         loadingCommentsHidden.style.display = "none";
         commentHidden.style.display = "flex";
       });
-
-    renderComments(comments);
   });
 };

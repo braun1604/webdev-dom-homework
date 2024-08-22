@@ -3,7 +3,7 @@ import { BASE_URL } from "./const.js";
 import { renderLogin } from "./loginPage.js";
 import { renderComments } from "./renderComments.js";
 import { commentsForm } from "./commentsForm.js";
-import { copyText } from "./helper.js";
+import { copyText, initEventListener } from "./helper.js";
 
 export const registration = () => {
   const registrationForm = document.createElement("div");
@@ -79,7 +79,6 @@ export const registration = () => {
         return user;
       })
       .then((user) => {
-        console.log(user.token);
         return fetch(BASE_URL, {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -92,23 +91,25 @@ export const registration = () => {
       })
       .then((responce) => {
         const comments = responce.comments;
-        console.log(comments);
         return comments;
       })
       .then((comments) => {
         reg.remove();
-        renderComments(comments);
+        renderComments(comments, user);
         commentsForm(user);
         copyText();
+        initEventListener(comments, user);
       })
       .catch((error) => {
+        console.error(error);
         if (error.message == "400 error") {
           alert("Пользователь с таким логином уже сущетсвует");
         } else if (error.message == "Сервер упал") {
           alert("Сервер сломался, попробуй позже");
-        } else {
-          error.message == "Failed to fetch";
+        } else if (error.message == "Failed to fetch") {
           alert("Кажется, у вас сломался интернет, попробуйте позже");
+        } else {
+          alert("Неизвестная ошибка");
         }
       });
   });
