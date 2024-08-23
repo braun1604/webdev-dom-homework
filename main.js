@@ -1,12 +1,9 @@
 "use strict";
-import { renderComments } from "./renderComments.js";
+import { notion } from "./notion.js";
 import { fetchPromise } from "./api.js";
-import { initEventListener } from "./helper.js";
-import { copyText } from "./helper.js";
 
-let comments = [];
-
-initEventListener(comments);
-fetchPromise();
-renderComments(comments);
-copyText();
+async function App() {
+  await fetchPromise();
+  notion();
+}
+App();

@@ -1,22 +1,42 @@
+import { likefun } from "./const.js";
 import { renderComments } from "./renderComments.js";
-export const initEventListener = (comments) => {
+import { BASE_URL } from "./const.js";
+
+export const initEventListener = (comments, user) => {
   const likeButtonEls = document.querySelectorAll(".like-button");
   for (const likeButtonEl of likeButtonEls) {
     likeButtonEl.addEventListener("click", () => {
       const index = likeButtonEl.dataset.index;
-      if (comments[index].isLiked) {
-        comments[index].isLiked = !comments[index].isLiked;
-        comments[index].likes--;
-      } else {
-        comments[index].isLiked = !comments[index].isLiked;
-        comments[index].likes++;
-      }
-      renderComments(comments);
+      fetch(likefun(comments[index].id), {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+        .then(() => {
+          return fetch(BASE_URL, {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          });
+        })
+        .then((responce) => {
+          return responce.json();
+        })
+        .then((responce) => {
+          const comments = responce.comments;
+          return comments;
+        })
+        .then((comments) => {
+          renderComments(comments, user);
+        });
     });
   }
 };
 
 export const copyText = () => {
+  const commentsEl = document.getElementById("comments");
+  const textareaEl = document.getElementById("textarea");
   commentsEl.addEventListener("click", (event) => {
     event.stopPropagation();
     let target = event.target;
@@ -26,11 +46,8 @@ export const copyText = () => {
     const currentHeader = document.querySelector(
       `[data-index="${event.target.dataset.index}"]`
     );
-    textareaEl.value = `>${target.textContent
+    textareaEl.value = `>${event.target.textContent
       .replace(/\s/g, " ")
       .trim()}\n${currentHeader.textContent.replace(/\s/g, " ").trim()}`;
   });
 };
-const textareaEl = document.getElementById("textarea");
-const commentsEl = document.getElementById("comments");
-
